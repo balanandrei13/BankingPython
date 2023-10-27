@@ -10,4 +10,3 @@ elif answer==2:
     transactions()
 else:
     print("Invalid input!")
-

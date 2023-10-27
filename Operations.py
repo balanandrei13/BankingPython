@@ -2,7 +2,8 @@ from Account import Account
 import Account
 listAccounts=[]
 
-def createAccount():
+# this function creates the account via user input
+def createAccount():                                                                                                   
     finished=False
     accountNum=0
     while finished==False:
@@ -27,6 +28,7 @@ def createAccount():
             finished=True
             print(listAccounts)
 
+# this function logs the user in so he can use only a specific account that is his and has authority over it to make transactions
 def login():
     usernameEntered=input("Please enter your username: ")
     for i in listAccounts:
@@ -36,15 +38,19 @@ def login():
                 print("Login Successfully!")
                 return i
 
+# this function finds an account that the account you are logged onto can make transactions with. 
 def accountFinder():
     accountFinder=int(input("What account do you want to use?: "))
     for i in listAccounts:
         if accountFinder==i.accountNumber:
             return i
 
+# this function enables you to make transations with the account that you are logged into and also transfer money to other accounts
 def transactions():
     accountToBeUsed=login()
+    #promt the user to select an action to be made with the account he is logged into
     action=int(input("What would you like to do?: \n1. Whitdraw\n2. Deposit\n3.Transfer\n"))
+    # check for users transaction choice from input
     if action==1:
         withdrawAmmount=int(input("How much money would you like to withdraw?: "))
         accountToBeUsed.credit-=withdrawAmmount
@@ -56,6 +62,7 @@ def transactions():
         print("You have deposited: "+str(depositAmmount)+
               "RON and your credit is now :"+str(accountToBeUsed.credit)+"RON.")
     elif action==3:
+        #uses the accountFound() function to find an account in the list made of Account Objects to add the ammount to.
         accountFound=accountFinder()
         transferAmmount=int(input("How much money would you like to transfer?: "))
         accountToBeUsed.credit -= transferAmmount

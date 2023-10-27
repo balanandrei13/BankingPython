@@ -1,3 +1,4 @@
+#this is the constructor
 class Account:
     def __init__(account,firstName,lastName,username,password,accountNumber,credit):
         account.firstName=firstName
