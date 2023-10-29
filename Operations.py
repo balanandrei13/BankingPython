@@ -2,6 +2,12 @@ from Account import Account
 import Account
 listAccounts=[]
 
+mihai=Account.Account("Mihai","Stefanescu","mihai","1234",10,200)
+ionut=Account.Account("Ionut","Cristescu","ionut","0000",11,300)
+#hard coded accounts for testing and log in function
+listAccounts.append(ionut)
+listAccounts.append(mihai)
+
 # this function creates the account via user input
 def createAccount():                                                                                                   
     finished=False
@@ -30,13 +36,29 @@ def createAccount():
 
 # this function logs the user in so he can use only a specific account that is his and has authority over it to make transactions
 def login():
-    usernameEntered=input("Please enter your username: ")
-    for i in listAccounts:
-        if usernameEntered==i.username:
-            passwordEntered=input("Please enter your password: ")
-            if passwordEntered==i.password:
-                print("Login Successfully!")
-                return i
+    loggedIn=False
+    foundUsername=False
+    correctPassword=False
+    account=Account.Account("","","","",0,0)
+    while loggedIn==False:
+        usernameEntered=input("Please enter your username: ")
+        for i in listAccounts:
+            if usernameEntered==i.username:
+                foundUsername=True
+                account=i
+                break
+            else:
+                foundUsername=False
+        
+        if foundUsername==True:
+            password=input("Please enter your passoword: ")
+            if password==account.password:
+                print("LogIn Successfull!")
+                return account
+            else:
+                print("Invalid Password!")
+        elif foundUsername==False:
+            print("Invalid Username!")
 
 # this function finds an account that the account you are logged onto can make transactions with. 
 def accountFinder():
@@ -44,30 +66,65 @@ def accountFinder():
     for i in listAccounts:
         if accountFinder==i.accountNumber:
             return i
+        else:
+            return -1
+        
 
+def withdraw(account):
+    try:
+        withdrawAmmount=int(input("How much money would you like to withdraw?: "))
+        if withdrawAmmount<=account.credit:
+            account.credit-=withdrawAmmount
+            print("You have withdrawn: "+str(withdrawAmmount)+
+                "RON and your credit is: "+str(account.credit)+"RON.")
+        else:
+            print("Insufficient funds!")
+    except:
+        print("Invalid Input!")
+
+def deposit(account):
+    try:
+        depositAmmount=int(input("How much money would you like to deposit?: "))
+        account.credit += depositAmmount
+        print("You have deposited: "+str(depositAmmount)+
+            "RON and your credit is now :"+str(account.credit)+"RON.")
+    except:
+        print("Invalid input")
+def transfer(account1,account2):
+    try:
+        transferAmmount=int(input("How much money would you like to transfer?: "))    
+        if transferAmmount<=account1.credit:
+            account1.credit -= transferAmmount
+            account2.credit += transferAmmount
+            print(account2.credit)
+            print("You have transfered: "+str(transferAmmount)+"RON to the account: "
+                +str(account2.accountNumber)+ "\n Your remaining balance is now : "+
+                str(account1.credit)+"RON.")
+        else:
+            print("Insufficient funds!")
+    except:
+        print("Invalid input")   
 # this function enables you to make transations with the account that you are logged into and also transfer money to other accounts
 def transactions():
+    finishedTransactions=False
     accountToBeUsed=login()
-    #promt the user to select an action to be made with the account he is logged into
-    action=int(input("What would you like to do?: \n1. Whitdraw\n2. Deposit\n3.Transfer\n"))
-    # check for users transaction choice from input
-    if action==1:
-        withdrawAmmount=int(input("How much money would you like to withdraw?: "))
-        accountToBeUsed.credit-=withdrawAmmount
-        print("You have withdrawn: "+str(withdrawAmmount)+
-              "RON and your credit is: "+str(accountToBeUsed.credit)+"RON.")
-    elif action==2:
-        depositAmmount=int(input("How much money would you like to deposit?: "))
-        accountToBeUsed.credit += depositAmmount
-        print("You have deposited: "+str(depositAmmount)+
-              "RON and your credit is now :"+str(accountToBeUsed.credit)+"RON.")
-    elif action==3:
-        #uses the accountFound() function to find an account in the list made of Account Objects to add the ammount to.
-        accountFound=accountFinder()
-        transferAmmount=int(input("How much money would you like to transfer?: "))
-        accountToBeUsed.credit -= transferAmmount
-        accountFound.credit += transferAmmount
-        print(accountFound.credit)
-        print("You have transfered: "+str(transferAmmount)+"RON to the account: "
-              +str(accountFound.accountNumber)+ "\n Your remaining balance is now : "+
-              str(accountToBeUsed.credit)+"RON.")
+    
+    while(finishedTransactions==False):
+        #promt the user to select an action to be made with the account he is logged into
+        action=input("What would you like to do?: \n1. Whitdraw\n2. Deposit\n3.Transfer\n")
+        # check for users transaction choice from input
+        if action=="1":
+            withdraw(accountToBeUsed)
+        elif action=="2":
+            deposit(accountToBeUsed)
+        elif action=="3":
+            #uses the accountFound() function to find an account in the list made of Account Objects to add the ammount to.
+            accountFound=accountFinder()
+            if accountFound==-1:
+                print("There is no such account number")
+                continue
+            transfer(accountToBeUsed,accountFound)
+        elif action=="Finish" or action=="0" or action=="finish":
+            break
+        else:
+            print("There is no such choise in the list!")
