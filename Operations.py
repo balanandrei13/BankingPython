@@ -35,13 +35,19 @@ def createAccount():
             print(listAccounts)
 
 # this function logs the user in so he can use only a specific account that is his and has authority over it to make transactions
+# I wanted the function to keep promting you for a username or a password until you log in.
 def login():
+    # boolean variable used to enter the loop
     loggedIn=False
+    # boolean used to enter the loop for username. I used it also to not print "Invalid Username" for each of the accounts being iterated.
     foundUsername=False
-    correctPassword=False
+    # initialize a new account so i can give it the value of i(the account found with the username required) in the next for loop, and use it outside of the loop
     account=Account.Account("","","","",0,0)
+
     while loggedIn==False:
         usernameEntered=input("Please enter your username: ")
+        if usernameEntered=="finished":
+                break
         for i in listAccounts:
             if usernameEntered==i.username:
                 foundUsername=True
@@ -52,8 +58,10 @@ def login():
         
         if foundUsername==True:
             password=input("Please enter your passoword: ")
+            if password=="finished":
+                break
             if password==account.password:
-                print("LogIn Successfull!")
+                print("Log In Successfull!")
                 return account
             else:
                 print("Invalid Password!")
@@ -62,14 +70,18 @@ def login():
 
 # this function finds an account that the account you are logged onto can make transactions with. 
 def accountFinder():
-    accountFinder=int(input("What account do you want to use?: "))
-    for i in listAccounts:
-        if accountFinder==i.accountNumber:
-            return i
-        else:
-            return -1
+    try:
+        accountFinder=int(input("What account do you want to use?: "))
+        for i in listAccounts:
+            if accountFinder==i.accountNumber:
+                return i
+            else:
+                return -1
+    except:
+        print("Invalid input!")
+        return -1
         
-
+#deposit function changes the value of the credit to the one you had minus the ammount from input
 def withdraw(account):
     try:
         withdrawAmmount=int(input("How much money would you like to withdraw?: "))
@@ -82,6 +94,7 @@ def withdraw(account):
     except:
         print("Invalid Input!")
 
+#deposit function changes the value of the credit to the one you had plus the ammount from input
 def deposit(account):
     try:
         depositAmmount=int(input("How much money would you like to deposit?: "))
@@ -90,6 +103,8 @@ def deposit(account):
             "RON and your credit is now :"+str(account.credit)+"RON.")
     except:
         print("Invalid input")
+
+# transfer function deducts the ammount from the account you are transfering, and adds it to the one, you are transfering to
 def transfer(account1,account2):
     try:
         transferAmmount=int(input("How much money would you like to transfer?: "))    
@@ -127,4 +142,4 @@ def transactions():
         elif action=="Finish" or action=="0" or action=="finish":
             break
         else:
-            print("There is no such choise in the list!")
+            print("There is no such choice in the list!")
