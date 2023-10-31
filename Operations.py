@@ -81,38 +81,38 @@ def accountFinder():
         print("Invalid input!")
         return -1
         
-#deposit function changes the value of the credit to the one you had minus the ammount from input
+#deposit function changes the value of the credit to the one you had minus the amount from input
 def withdraw(account):
     try:
-        withdrawAmmount=int(input("How much money would you like to withdraw?: "))
-        if withdrawAmmount<=account.credit:
-            account.credit-=withdrawAmmount
-            print("You have withdrawn: "+str(withdrawAmmount)+
+        withdrawAmount=int(input("How much money would you like to withdraw?: "))
+        if withdrawAmount<=account.credit:
+            account.credit-=withdrawAmount
+            print("You have withdrawn: "+str(withdrawAmount)+
                 "RON and your credit is: "+str(account.credit)+"RON.")
         else:
             print("Insufficient funds!")
     except:
         print("Invalid Input!")
 
-#deposit function changes the value of the credit to the one you had plus the ammount from input
+#deposit function changes the value of the credit to the one you had plus the amount from input
 def deposit(account):
     try:
-        depositAmmount=int(input("How much money would you like to deposit?: "))
-        account.credit += depositAmmount
-        print("You have deposited: "+str(depositAmmount)+
+        depositAmount=int(input("How much money would you like to deposit?: "))
+        account.credit += depositAmount
+        print("You have deposited: "+str(depositAmount)+
             "RON and your credit is now :"+str(account.credit)+"RON.")
     except:
         print("Invalid input")
 
-# transfer function deducts the ammount from the account you are transfering, and adds it to the one, you are transfering to
+# transfer function deducts the amount from the account you are transfering, and adds it to the one, you are transfering to
 def transfer(account1,account2):
     try:
-        transferAmmount=int(input("How much money would you like to transfer?: "))    
-        if transferAmmount<=account1.credit:
-            account1.credit -= transferAmmount
-            account2.credit += transferAmmount
+        transferAmount=int(input("How much money would you like to transfer?: "))    
+        if transferAmount<=account1.credit:
+            account1.credit -= transferAmount
+            account2.credit += transferAmount
             print(account2.credit)
-            print("You have transfered: "+str(transferAmmount)+"RON to the account: "
+            print("You have transfered: "+str(transferAmount)+"RON to the account: "
                 +str(account2.accountNumber)+ "\n Your remaining balance is now : "+
                 str(account1.credit)+"RON.")
         else:
@@ -133,7 +133,7 @@ def transactions():
         elif action=="2":
             deposit(accountToBeUsed)
         elif action=="3":
-            #uses the accountFound() function to find an account in the list made of Account Objects to add the ammount to.
+            #uses the accountFound() function to find an account in the list made of Account Objects to add the amount to.
             accountFound=accountFinder()
             if accountFound==-1:
                 print("There is no such account number")
